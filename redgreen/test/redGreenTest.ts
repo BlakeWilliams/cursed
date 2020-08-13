@@ -1,7 +1,7 @@
 import assert from "../lib/assert"
 import RedGreen, { Runner } from "../lib/redgreen"
 
-RedGreen.test("hello world", async () => {
+RedGreen.test("runner runs tests", async () => {
   const runner = new Runner()
   runner.reporter = undefined
 
@@ -12,8 +12,19 @@ RedGreen.test("hello world", async () => {
   })
 
   await runner.run()
-  assert(called, "Expected called to be truthy")
+  assert(called)
 })
 
-RedGreen.test("hello world", () => {
+RedGreen.test("runner times out tests", async () => {
+  const runner = new Runner()
+  runner.reporter = undefined
+  runner.testTimeout = 100
+
+  const timedOutTest = runner.test("fake", () => {
+    return new Promise(() => {}) // never returns
+  })
+
+  await runner.run()
+  assert(timedOutTest.failure)
+  assert.match(/timed out.*100ms/, timedOutTest.failure!.message)
 })

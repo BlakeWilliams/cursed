@@ -1,8 +1,9 @@
 import chalk from "chalk"
 import * as path from "path"
-import * as os from "os"
 import type Test from "./test"
 import { Runner } from "./redgreen"
+
+let TRACE_REGEX = /(\/.*)+(:\d+:\d+)$/
 
 export interface Reportable {
   testRunStart(runner: Runner): void | Promise<any>
@@ -32,11 +33,10 @@ export default class Reporter implements Reportable {
     process.stdout.write("\n\n")
     process.stdout.write(chalk`  {green ${passingCount} passing tests}\n`)
     process.stdout.write(chalk`  {red ${this.failures.length} failing tests}\n`)
-    process.stdout.write("\n")
 
     if (this.failures.length > 0) {
       this.failures.forEach((test: Test, index: number) => {
-        process.stdout.write(chalk`{red ${index+1})} ${test.name}`)
+        process.stdout.write(chalk`\n{red ${index+1})} ${test.name}`)
 
         const exceptionPath = this.exceptionTestPath(test.failure!)
 
@@ -45,20 +45,24 @@ export default class Reporter implements Reportable {
         }
 
         process.stdout.write("\n")
-        process.stdout.write(`   ${test.failure!.message}`)
+        process.stdout.write(`   ${test.failure!.message.split("\n").join("\n   ")}\n`)
       })
-
-      console.log("\n")
     }
   }
 
   exceptionTestPath(exception: Error): string  | undefined{
     if (exception.stack) {
       const stack = exception.stack.split("\n")
-      const firstTrace = stack[1]
-      const [_, filePath, lineNumbers] = firstTrace.match(/\((.*)(:\d+:\d+)\)$/)!
+      const firstTrace = stack.find(x => x.match(/^\s+at/))
 
-      return `./${path.relative(process.env.PWD!, filePath)}${lineNumbers}`
+      if (firstTrace) {
+        const traceParts = firstTrace.match(TRACE_REGEX)
+
+        if (traceParts && traceParts.length >= 3) {
+          const [_, filePath, lineNumbers] = traceParts
+          return `./${path.relative(process.env.PWD!, filePath)}${lineNumbers}`
+        }
+      }
     }
   }
 }

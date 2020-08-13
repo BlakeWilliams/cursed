@@ -1,3 +1,5 @@
+import runWithTimeout from "./runWithTimeout"
+
 export type TestFn = () => void | Promise<any>
 
 export default class Test {
@@ -15,6 +17,16 @@ export default class Test {
       await this.testFn()
     } catch(e) {
       this.failure = e
+    }
+  }
+
+  async runWithTimeout(timeout: number) {
+    try {
+      await runWithTimeout(this.testFn, timeout)
+    } catch(e) {
+      if (!this.failure) {
+        this.failure = e
+      }
     }
   }
 }
