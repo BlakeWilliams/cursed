@@ -36,7 +36,7 @@ export default class Reporter implements Reportable {
 
     if (this.failures.length > 0) {
       this.failures.forEach((test: Test, index: number) => {
-        process.stdout.write(chalk`\n{red ${index+1})} ${test.name}`)
+        process.stdout.write(chalk`\n{red ${index+1})} ${test.nameWithContext}`)
 
         const exceptionPath = this.exceptionTestPath(test.failure!)
 

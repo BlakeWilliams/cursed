@@ -1,6 +1,7 @@
 import chalk from "chalk"
 import Test, { TestFn } from "./test"
 import Reporter, { Reportable } from "./reporter"
+import Context from "./context"
 
 interface RunnerTests {
   [key: string]: Test
@@ -20,13 +21,22 @@ export class Runner {
     return Object.values(this.allTests)
   }
 
-  test(name: string, testFn: TestFn): Test {
-    if (this.allTests[name]) {
+  describe(name: string, fn: (context: Context) => void) {
+    const context = new Context(name, this)
+    context.run(fn)
+
+    return context
+  }
+
+  test(name: string, testFn: TestFn, context?: Context): Test {
+    const test = new Test(name, testFn, context)
+
+    if (this.allTests[test.nameWithContext]) {
       throw new Error(chalk`{red Duplicate test defined:} ${name}`)
+    } else {
+      this.allTests[test.nameWithContext] = test
     }
 
-    const test = new Test(name, testFn)
-    this.allTests[name] = test
     return test
   }
 
