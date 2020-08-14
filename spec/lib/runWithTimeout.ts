@@ -8,7 +8,13 @@ export default function(fn: () => any, timeout: number) {
       }
     }, timeout)
 
-    const runnable = fn()
+    let runnable;
+    try {
+      runnable = fn()
+    } catch(e) {
+      clearTimeout(timer)
+      reject(e)
+    }
 
     if (runnable instanceof Promise) {
       runnable.then(value => {
@@ -19,6 +25,7 @@ export default function(fn: () => any, timeout: number) {
         clearTimeout(timer)
       })
     } else {
+      clearTimeout(timer)
       resolve(runnable)
     }
   })
