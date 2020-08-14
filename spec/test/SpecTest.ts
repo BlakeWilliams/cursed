@@ -1,7 +1,7 @@
 import assert from "../lib/assert"
-import RedGreen, { Runner } from "../lib/redgreen"
+import Spec, { Runner } from "../lib/spec"
 
-RedGreen.test("runner runs tests", async () => {
+Spec.test("runner runs tests", async () => {
   const runner = new Runner()
   runner.reporter = undefined
 
@@ -15,7 +15,7 @@ RedGreen.test("runner runs tests", async () => {
   assert(called)
 })
 
-RedGreen.test("runner times out tests", async () => {
+Spec.test("runner times out tests", async () => {
   const runner = new Runner()
   runner.reporter = undefined
   runner.testTimeout = 100

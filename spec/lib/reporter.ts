@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import * as path from "path"
 import type Test from "./test"
-import { Runner } from "./redgreen"
+import { Runner } from "./spec"
 
 let TRACE_REGEX = /(\/.*)+(:\d+:\d+)$/
 

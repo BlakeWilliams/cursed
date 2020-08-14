@@ -1,5 +1,5 @@
 import * as glob from "glob"
-import RedGreen from "../lib/redgreen"
+import Spec from "../lib/spec"
 
 const testFilePaths = glob.sync(__dirname + "**/*Test.ts")
 const imports = testFilePaths.map(testFile => import(testFile))
@@ -13,7 +13,7 @@ function keepAlive() {
 
 keepAlive()
 Promise.all(imports).then(() => {
-  return RedGreen.run()
+  return Spec.run()
 }).then(() => {
   done = true
 }).catch(e => {
