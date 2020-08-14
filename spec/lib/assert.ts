@@ -21,3 +21,13 @@ assert.match = function(match: RegExp, string: string) {
     )
   }
 }
+
+assert.throws = async function(fn: () => any) {
+  try {
+    await fn()
+  } catch(e) {
+    return e
+  }
+
+  throw new TestError(`expected an exception, got none`)
+}

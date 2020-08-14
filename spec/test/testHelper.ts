@@ -6,4 +6,7 @@ const imports = testFilePaths.map(testFile => import(testFile))
 
 Promise.all(imports).then(() => {
   return Spec.run()
+}).catch(e => {
+  console.log(e)
+  process.exit(1)
 })

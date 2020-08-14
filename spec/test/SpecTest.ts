@@ -28,3 +28,15 @@ Spec.test("runner times out tests", async () => {
   assert(timedOutTest.failure)
   assert.match(/timed out.*100ms/, timedOutTest.failure!.message)
 })
+
+Spec.test("throws when test name is duplicated", async () => {
+  const runner = new Runner()
+  runner.reporter = undefined
+  runner.testTimeout = 100
+
+  runner.test("dupe", () => {})
+
+  const error = await assert.throws(() => {
+    runner.test("dupe", () => {})
+  })
+})

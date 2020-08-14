@@ -1,8 +1,13 @@
+import chalk from "chalk"
 import Test, { TestFn } from "./test"
 import Reporter, { Reportable } from "./reporter"
 
+interface RunnerTests {
+  [key: string]: Test
+}
+
 export class Runner {
-  tests: Test[] = []
+  private allTests: RunnerTests = {}
   reporter?: Reportable
   testTimeout: number = 5000
   working: boolean = false
@@ -11,10 +16,17 @@ export class Runner {
     this.reporter = new Reporter()
   }
 
-  test(name: string, testFn: TestFn): Test {
-    const test = new Test(name, testFn)
-    this.tests.push(test)
+  get tests() {
+    return Object.values(this.allTests)
+  }
 
+  test(name: string, testFn: TestFn): Test {
+    if (this.allTests[name]) {
+      throw new Error(chalk`{red Duplicate test defined:} ${name}`)
+    }
+
+    const test = new Test(name, testFn)
+    this.allTests[name] = test
     return test
   }
 
