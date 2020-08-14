@@ -1,7 +1,6 @@
 import assert from "../lib/assert"
 import Spec, { Runner } from "../lib/spec"
 
-
 Spec.describe("Runner", c => {
   c.test("runs tests", async () => {
     const runner = new Runner()
@@ -66,6 +65,33 @@ Spec.describe("Runner", c => {
 
 
     assert.match(/Duplicate.*dupe/, error.message)
+  })
+
+  c.test("calls context callbacks and test in correct order", async () => {
+    const runner = new Runner()
+    runner.reporter = undefined
+    runner.testTimeout = 100
+
+    const expected = ["before", "test", "after"]
+    const received: string[] = []
+
+    runner.describe("test", c => {
+      c.beforeEach(async () => {
+        received.push("before")
+      })
+
+      c.afterEach(async () => {
+        received.push("after")
+      })
+
+      c.test("test", async () => {
+        received.push("test")
+      })
+    })
+
+    await runner.run()
+
+    assert.equal(received, expected)
   })
 })
 
