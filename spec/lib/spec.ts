@@ -5,6 +5,7 @@ export class Runner {
   tests: Test[] = []
   reporter?: Reportable
   testTimeout: number = 5000
+  working: boolean = false
 
   constructor() {
     this.reporter = new Reporter()
@@ -18,14 +19,29 @@ export class Runner {
   }
 
   async run() {
-    this.reporter?.testRunStart(this)
-    const testRuns = this.tests.map(async (test) => {
-      await test.runWithTimeout(this.testTimeout)
-      this.reporter?.testRunResult(test)
-    })
+    try {
+      this.startKeepAlive()
+      this.reporter?.testRunStart(this)
+      const testRuns = this.tests.map(async (test) => {
+        await test.runWithTimeout(this.testTimeout)
+        this.reporter?.testRunResult(test)
+      })
 
-    await Promise.all(testRuns)
-    await this.reporter?.testRunEnd(this)
+      await Promise.all(testRuns)
+      await this.reporter?.testRunEnd(this)
+    } finally {
+      this.stopKeepAlive()
+    }
+  }
+
+  startKeepAlive() {
+    setTimeout(() => {
+      if (this.working) this.startKeepAlive()
+    }, 100)
+  }
+
+  stopKeepAlive() {
+    this.working = false
   }
 }
 
