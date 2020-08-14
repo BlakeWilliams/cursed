@@ -39,4 +39,6 @@ Spec.test("throws when test name is duplicated", async () => {
   const error = await assert.throws(() => {
     runner.test("dupe", () => {})
   })
+
+  assert.match(/Duplicate.*dupe/, error.message)
 })
