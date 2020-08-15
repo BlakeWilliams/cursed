@@ -1,12 +1,3 @@
-import * as glob from "glob"
 import Spec from "../lib/spec"
 
-const testFilePaths = glob.sync(__dirname + "**/*Test.ts")
-const imports = testFilePaths.map(testFile => import(testFile))
-
-Promise.all(imports).then(() => {
-  return Spec.run()
-}).catch(e => {
-  console.log(e)
-  process.exit(1)
-})
+Spec.importTests(__dirname).then(() => Spec.run())

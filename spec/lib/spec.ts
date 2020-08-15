@@ -1,4 +1,5 @@
 import chalk from "chalk"
+import glob from "glob"
 import Test, { TestFn } from "./test"
 import Reporter, { Reportable } from "./reporter"
 import Context from "./context"
@@ -40,17 +41,27 @@ export class Runner {
     return test
   }
 
+  async importTests(root: string, pathGlob: string = "/**/*Test.@(ts|js)") {
+    const testFilePaths = glob.sync(root + pathGlob)
+    const imports = testFilePaths.map(path => import(path))
+
+    await Promise.all(imports)
+  }
+
   async run() {
     try {
       this.startKeepAlive()
       this.reporter?.testRunStart(this)
-      const testRuns = this.tests.map(async (test) => {
+
+      for (let test of this.tests) {
         await test.runWithTimeout(this.testTimeout)
         this.reporter?.testRunResult(test)
-      })
+      }
 
-      await Promise.all(testRuns)
       await this.reporter?.testRunEnd(this)
+    } catch(e) {
+      console.log(e)
+      process.exit(1)
     } finally {
       this.stopKeepAlive()
     }

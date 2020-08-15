@@ -7,7 +7,7 @@
     "test": "ts-node test/testHelper.ts"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "chalk": "^4.1.0",
     "glob": "^7.1.6"
