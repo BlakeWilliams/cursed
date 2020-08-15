@@ -21,6 +21,7 @@ Spec.describe("Metal", c => {
     const simpleMiddleware = {
       async call(c: Context) {
         c.res.status = 201
+        c.res.addHeader("content-type", "text/plain")
         c.res.body = "hello world"
       }
     }
@@ -28,6 +29,7 @@ Spec.describe("Metal", c => {
     let res = await getResponse()
 
     assert.equal(201, res.status)
+    assert.equal("text/plain", res.headers["content-type"])
     assert.equal("hello world", res.body)
   })
 
@@ -92,7 +94,7 @@ Spec.describe("Metal", c => {
 
 interface HttpResponse {
   status: number
-  headers: []
+  headers: any
   body: string
 }
 
@@ -108,7 +110,7 @@ function getResponse(path: string = "/"): Promise<HttpResponse> {
       response.on('end', () => {
         resolve({
           status: response.statusCode!,
-          headers: [], //response.headers,
+          headers: response.headers,
           body: body
         })
       })
