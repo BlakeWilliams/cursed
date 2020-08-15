@@ -1,0 +1,17 @@
+{
+  "name": "metal",
+  "version": "0.1.0",
+  "description": "Middleware",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "ts-node test/index.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7",
+    "why-is-node-running": "^2.2.0"
+  }
+}

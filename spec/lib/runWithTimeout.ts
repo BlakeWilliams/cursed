@@ -1,7 +1,6 @@
 export default function(fn: () => any, timeout: number) {
   return new Promise((resolve, reject) => {
     const timer = setTimeout(() => {
-      // try catch to get an Error with a trace
       try {
         throw new Error(`Function timed out after ${timeout}ms`)
       } catch(e) {
