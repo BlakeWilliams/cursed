@@ -1,5 +1,6 @@
+import Runner from "../lib/runner"
 import assert from "../lib/assert"
-import Spec, { Runner } from "../"
+import Spec from "@cursed/spec"
 
 Spec.describe("Runner", c => {
   c.test("runs tests", async () => {
