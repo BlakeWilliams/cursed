@@ -1,26 +1,26 @@
-import * as http from 'http';
-import type { Headers } from "../index"
+import * as http from "http";
+import type { Headers } from "../index";
 
 export default class Request {
-  private nodeRequest: http.IncomingMessage
-  headers: Headers
+  private nodeRequest: http.IncomingMessage;
+  headers: Headers;
 
   constructor(nodeRequest: http.IncomingMessage) {
-    this.nodeRequest = nodeRequest
-    this.headers = {}
-    this.buildHeaders()
+    this.nodeRequest = nodeRequest;
+    this.headers = {};
+    this.buildHeaders();
   }
 
   private buildHeaders() {
-    this.headers = {}
+    this.headers = {};
 
     for (const key in this.nodeRequest.headers) {
-      const value = this.nodeRequest.headers[key]
+      const value = this.nodeRequest.headers[key];
 
       if (Array.isArray(value)) {
-        this.headers[key] = value.join(", ")
-      } else if(value) {
-        this.headers[key] = value
+        this.headers[key] = value.join(", ");
+      } else if (value) {
+        this.headers[key] = value;
       }
     }
   }

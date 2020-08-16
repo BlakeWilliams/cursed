@@ -9,10 +9,11 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@cursed/spec": "0.1.2",
     "@types/node": "^14.0.27",
+    "prettier": "^2.0.5",
     "ts-node": "^8.10.2",
     "typescript": "^3.9.7",
-    "@cursed/spec": "0.1.2",
     "why-is-node-running": "^2.2.0"
   }
 }
