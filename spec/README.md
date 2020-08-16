@@ -31,6 +31,7 @@ The default export of `@cursed/spec` is an instance of `Runner` so you can
 `import Spec from "@cursed/spec"` and immediately begin writing tests:
 
 ```typescript
+// test/myTest.ts
 import Spec, { assert } from "@cursed/spec"
 
 let instance
