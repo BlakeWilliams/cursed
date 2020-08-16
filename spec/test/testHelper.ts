@@ -1,3 +1,3 @@
-import Spec from "../lib/spec"
+import Spec from "../"
 
 Spec.importTests(__dirname).then(() => Spec.run())

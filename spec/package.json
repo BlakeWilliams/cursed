@@ -1,9 +1,11 @@
 {
-  "name": "spec",
+  "name": "@cursed/spec",
   "version": "0.1.0",
   "description": "Simple test runner",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "license": "MIT",
   "scripts": {
+    "build": "tsc",
     "test": "ts-node test/testHelper.ts"
   },
   "author": "",

@@ -8,7 +8,7 @@ interface RunnerTests {
   [key: string]: Test
 }
 
-export class Runner {
+export default class Runner {
   private allTests: RunnerTests = {}
   reporter?: Reportable
   testTimeout: number = 5000
@@ -77,5 +77,3 @@ export class Runner {
     this.working = false
   }
 }
-
-export default new Runner()

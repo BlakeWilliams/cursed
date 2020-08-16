@@ -1,4 +1,4 @@
-import type { Runner } from "./spec"
+import type Runner from "./runner"
 import Test, { TestFn } from "./test"
 
 type CallbackFn = (test: Test) => void | Promise<any>
