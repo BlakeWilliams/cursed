@@ -1,6 +1,3 @@
-import Spec from "../../spec/lib/spec"
-// @ts-ignore
-import log from "why-is-node-running"
-
+import Spec from "@cursed/spec"
 
 Spec.importTests(__dirname).then(() => Spec.run())

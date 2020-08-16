@@ -1,8 +1,7 @@
 import { request } from 'http';
 
 import Metal, { Context } from "../index"
-import assert from "../../spec/lib/assert"
-import Spec from "../../spec/lib/spec"
+import Spec, { assert } from "@cursed/spec"
 import runWithTimeout from "../../spec/lib/runWithTimeout"
 
 let metal: Metal
