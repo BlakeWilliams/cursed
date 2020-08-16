@@ -1,40 +1,40 @@
-import type Runner from "./runner"
-import Test, { TestFn } from "./test"
+import type Runner from "./runner";
+import Test, { TestFn } from "./test";
 
-type CallbackFn = (test: Test) => void | Promise<any>
+type CallbackFn = (test: Test) => void | Promise<any>;
 
 export default class Context {
-  name: string
-  runner: Runner
-  private beforeEachFn?: CallbackFn
-  private afterEachFn?: CallbackFn
+  name: string;
+  runner: Runner;
+  private beforeEachFn?: CallbackFn;
+  private afterEachFn?: CallbackFn;
 
   constructor(name: string, runner: Runner) {
-    this.name = name
-    this.runner = runner
+    this.name = name;
+    this.runner = runner;
   }
 
   beforeEach(fn: CallbackFn) {
-    this.beforeEachFn = fn
+    this.beforeEachFn = fn;
   }
 
   afterEach(fn: CallbackFn) {
-    this.afterEachFn = fn
+    this.afterEachFn = fn;
   }
 
   async runBeforeEach(test: Test) {
-    await this.beforeEachFn?.(test)
+    await this.beforeEachFn?.(test);
   }
 
   async runAfterEach(test: Test) {
-    await this.afterEachFn?.(test)
+    await this.afterEachFn?.(test);
   }
 
   test(name: string, testFn: TestFn) {
-    return this.runner.test(name, testFn, this)
+    return this.runner.test(name, testFn, this);
   }
 
   run(fn: (context: this) => void) {
-    fn.call(undefined, this)
+    fn.call(undefined, this);
   }
 }

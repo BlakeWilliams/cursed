@@ -13,9 +13,9 @@ Create a `test` directory.
 Create the `test/index.ts` with the following:
 
 ```typescript
-import Spec from "@cursed/spec"
+import Spec from "@cursed/spec";
 
-Spec.importTests(__dirname).then(() => Spec.run())
+Spec.importTests(__dirname).then(() => Spec.run());
 ```
 
 Now, test files in `test` that end in `Test.ts` or `Test.js` will be imported
@@ -32,19 +32,19 @@ The default export of `@cursed/spec` is an instance of `Runner` so you can
 
 ```typescript
 // test/myTest.ts
-import Spec, { assert } from "@cursed/spec"
+import Spec, { assert } from "@cursed/spec";
 
-let instance
-Spec.describe("MyClass", c => {
+let instance;
+Spec.describe("MyClass", (c) => {
   c.beforeEach(() => {
-    instance = new MyClass()
-  })
+    instance = new MyClass();
+  });
 
   c.test("it does something", async () => {
-    await instance.perform()
+    await instance.perform();
 
-    assert(instance.ran)
-    assert.equal(1, instance.runCount)
-  })
-})
+    assert(instance.ran);
+    assert.equal(1, instance.runCount);
+  });
+});
 ```

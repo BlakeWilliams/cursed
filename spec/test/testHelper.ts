@@ -1,3 +1,3 @@
-import Spec from "@cursed/spec"
+import Spec from "@cursed/spec";
 
-Spec.importTests(__dirname).then(() => Spec.run())
+Spec.importTests(__dirname).then(() => Spec.run());

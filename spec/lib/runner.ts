@@ -1,79 +1,79 @@
-import chalk from "chalk"
-import glob from "glob"
-import Test, { TestFn } from "./test"
-import Reporter, { Reportable } from "./reporter"
-import Context from "./context"
+import chalk from "chalk";
+import glob from "glob";
+import Test, { TestFn } from "./test";
+import Reporter, { Reportable } from "./reporter";
+import Context from "./context";
 
 interface RunnerTests {
-  [key: string]: Test
+  [key: string]: Test;
 }
 
 export default class Runner {
-  private allTests: RunnerTests = {}
-  reporter?: Reportable
-  testTimeout: number = 5000
-  working: boolean = false
+  private allTests: RunnerTests = {};
+  reporter?: Reportable;
+  testTimeout: number = 5000;
+  working: boolean = false;
 
   constructor() {
-    this.reporter = new Reporter()
+    this.reporter = new Reporter();
   }
 
   get tests() {
-    return Object.values(this.allTests)
+    return Object.values(this.allTests);
   }
 
   describe(name: string, fn: (context: Context) => void) {
-    const context = new Context(name, this)
-    context.run(fn)
+    const context = new Context(name, this);
+    context.run(fn);
 
-    return context
+    return context;
   }
 
   test(name: string, testFn: TestFn, context?: Context): Test {
-    const test = new Test(name, testFn, context)
+    const test = new Test(name, testFn, context);
 
     if (this.allTests[test.nameWithContext]) {
-      throw new Error(chalk`{red Duplicate test defined:} ${name}`)
+      throw new Error(chalk`{red Duplicate test defined:} ${name}`);
     } else {
-      this.allTests[test.nameWithContext] = test
+      this.allTests[test.nameWithContext] = test;
     }
 
-    return test
+    return test;
   }
 
   async importTests(root: string, pathGlob: string = "/**/*Test.@(ts|js)") {
-    const testFilePaths = glob.sync(root + pathGlob)
-    const imports = testFilePaths.map(path => import(path))
+    const testFilePaths = glob.sync(root + pathGlob);
+    const imports = testFilePaths.map((path) => import(path));
 
-    await Promise.all(imports)
+    await Promise.all(imports);
   }
 
   async run() {
     try {
-      this.startKeepAlive()
-      this.reporter?.testRunStart(this)
+      this.startKeepAlive();
+      this.reporter?.testRunStart(this);
 
       for (let test of this.tests) {
-        await test.runWithTimeout(this.testTimeout)
-        this.reporter?.testRunResult(test)
+        await test.runWithTimeout(this.testTimeout);
+        this.reporter?.testRunResult(test);
       }
 
-      await this.reporter?.testRunEnd(this)
-    } catch(e) {
-      console.log(e)
-      process.exit(1)
+      await this.reporter?.testRunEnd(this);
+    } catch (e) {
+      console.log(e);
+      process.exit(1);
     } finally {
-      this.stopKeepAlive()
+      this.stopKeepAlive();
     }
   }
 
   startKeepAlive() {
     setTimeout(() => {
-      if (this.working) this.startKeepAlive()
-    }, 100)
+      if (this.working) this.startKeepAlive();
+    }, 100);
   }
 
   stopKeepAlive() {
-    this.working = false
+    this.working = false;
   }
 }
