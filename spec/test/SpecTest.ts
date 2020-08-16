@@ -1,11 +1,16 @@
 import Runner from "../lib/runner";
 import Spec, { assert } from "@cursed/spec";
 
-Spec.describe("Runner", (c) => {
-  c.test("runs tests", async () => {
-    const runner = new Runner();
-    runner.reporter = undefined;
+let runner: Runner;
 
+Spec.describe("Runner", (c) => {
+  c.beforeEach(() => {
+    runner = new Runner();
+    runner.reporter = undefined;
+    runner.testTimeout = 100;
+  });
+
+  c.test("runs tests", async () => {
     let called = false;
 
     runner.test("fake", () => {
@@ -17,10 +22,6 @@ Spec.describe("Runner", (c) => {
   });
 
   c.test("times out tests", async () => {
-    const runner = new Runner();
-    runner.reporter = undefined;
-    runner.testTimeout = 100;
-
     const timedOutTest = runner.test("fake", () => {
       return new Promise(() => {}); // never returns
     });
@@ -31,10 +32,6 @@ Spec.describe("Runner", (c) => {
   });
 
   c.test("throws when test name is duplicated", async () => {
-    const runner = new Runner();
-    runner.reporter = undefined;
-    runner.testTimeout = 100;
-
     runner.test("dupe", () => {});
 
     const error = await assert.throws(() => {
@@ -47,20 +44,12 @@ Spec.describe("Runner", (c) => {
   c.test(
     "does not throw when test name is duplicated in different context",
     async () => {
-      const runner = new Runner();
-      runner.reporter = undefined;
-      runner.testTimeout = 100;
-
       runner.describe("one", (c) => c.test("dupe", () => {}));
       runner.describe("two", (c) => c.test("dupe", () => {}));
     }
   );
 
   c.test("throws when test name is duplicated in same context", async () => {
-    const runner = new Runner();
-    runner.reporter = undefined;
-    runner.testTimeout = 100;
-
     const error = await assert.throws(() => {
       runner.describe("one", (c) => c.test("dupe", () => {}));
       runner.describe("one", (c) => c.test("dupe", () => {}));
@@ -70,10 +59,6 @@ Spec.describe("Runner", (c) => {
   });
 
   c.test("calls context callbacks and test in correct order", async () => {
-    const runner = new Runner();
-    runner.reporter = undefined;
-    runner.testTimeout = 100;
-
     const expected = ["before", "test", "after"];
     const received: string[] = [];
 
