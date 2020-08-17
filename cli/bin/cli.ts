@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
+import * as fs from "fs";
 import cursed, { Command } from "../index";
 import "ts-node/register";
 
-import(process.cwd() + "/cursed")
+import(process.cwd() + "/cursed.ts")
   .then(async (commands) => {
     commands.default(cursed);
     try {
@@ -15,7 +16,11 @@ import(process.cwd() + "/cursed")
     }
   })
   .catch(async (e) => {
-    console.error("Error loading cursed.ts");
-    console.error(e);
+    if (fs.existsSync(process.cwd() + "/cursed.ts")) {
+      console.error("Error loading cursed.ts");
+      console.error(e);
+    } else {
+      console.log("Could not find cursed.ts file\n");
+    }
     await cursed.run(process.argv);
   });

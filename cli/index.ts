@@ -1,9 +1,9 @@
 import chalk from "chalk";
-import Parser from "./lib/cursed";
+import Cursed from "./lib/cursed";
 import Command from "./lib/command";
 
-const parser = new Parser(process.stdout);
+const cursed = new Cursed(process.stdout);
 
-export { Command };
+export { Cursed, Command };
 
-export default parser;
+export default cursed;
