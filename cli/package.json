@@ -1,0 +1,25 @@
+{
+  "name": "@cursed/cli",
+  "version": "0.1.0",
+  "description": "A extendable task runner",
+  "main": "index.js",
+  "scripts": {
+    "test": "ts-node test/index.ts"
+  },
+  "bin": {
+    "cursed": "./dist/bin/cli.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@cursed/spec": "0.1.2",
+    "@types/chalk": "^2.2.0",
+    "@types/node": "^14.0.27",
+    "prettier": "^2.0.5",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.7"
+  },
+  "dependencies": {
+    "chalk": "^4.1.0"
+  }
+}
