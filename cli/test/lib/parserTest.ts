@@ -48,7 +48,10 @@ Spec.describe("cursed", (c) => {
   c.test(
     "lists script/user defined commands when command is `commands`",
     async () => {
-      cursed.addCommand("hello <user name>", (args: string[]) => {});
+      cursed
+        .addCommand("hello", "says hello")
+        .posArgs("user name")
+        .do((args: any) => {});
       await cursed.run(["node", "script", "commands"]);
 
       assert.match(/hello <user name>/, out);
@@ -56,14 +59,17 @@ Spec.describe("cursed", (c) => {
   );
 
   c.test("commands get extra parameters", async () => {
-    let receivedArgs: string[] = [];
+    let receivedArgs: any = [];
 
-    cursed.addCommand("hello <user name>", (args: string[]) => {
-      receivedArgs = args;
-    });
+    cursed
+      .addCommand("hello", "says hello")
+      .posArgs("user name")
+      .do((args: any) => {
+        receivedArgs = args;
+      });
     // cursed hello 'Fox Mulder'
     await cursed.run(["node", "script", "hello", "Fox Mulder"]);
 
-    assert.equal(["Fox Mulder"], receivedArgs);
+    assert.equal("Fox Mulder", receivedArgs["user name"]);
   });
 });

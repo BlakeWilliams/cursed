@@ -1,7 +1,7 @@
 import type { Writable } from "stream";
 import chalk from "chalk";
 import { version } from "../package.json";
-import Command, { CommandFn } from "./command";
+import Command from "./command";
 
 interface Commands {
   [key: string]: Command;
@@ -16,8 +16,8 @@ export default class Cursed {
     this.out = out;
   }
 
-  addCommand(name: string, handler: CommandFn) {
-    const command = new Command(name, handler);
+  addCommand(name: string, description: string) {
+    const command = new Command(name, description);
     this.commands[command.name] = command;
 
     return command;
