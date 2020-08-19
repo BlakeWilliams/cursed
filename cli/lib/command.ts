@@ -4,29 +4,27 @@ interface ArgMap {
   [key: string]: string;
 }
 
+const ARG_REGEX = /^--(.*?)(=(.*)|$)/;
+
 export default class Command {
   name: string;
-  description?: string;
-  private boolFlags: ArgMap = {};
-  private valFlags: ArgMap = {};
+  description: string;
+
+  private flags: ArgMap = {};
   private positionalArgs: string[] = [];
   private handler?: CommandFn;
 
   constructor(name: string, description: string) {
     this.name = name;
+    this.description = description;
   }
 
-  boolFlag(name: string, description: string): this {
-    this.boolFlags[name] = description;
+  flag(name: string, description: string): this {
+    this.flags[name] = description;
     return this;
   }
 
-  valFlag(name: string, description: string): this {
-    this.valFlags[name] = description;
-    return this;
-  }
-
-  posArgs(...args: string[]): this {
+  args(...args: string[]): this {
     this.positionalArgs = args;
     return this;
   }
@@ -44,23 +42,14 @@ export default class Command {
       const arg = args[i];
 
       if (arg.startsWith("--")) {
-        const argName = arg.replace(/^--/, "");
+        if (arg.match(ARG_REGEX)) {
+          let [_all, name, _eqGroup, value] = arg.match(ARG_REGEX)!;
 
-        if (Object.keys(this.valFlags).includes(argName)) {
-          const nextArg = args[i + 1];
-
-          if (!nextArg || nextArg.startsWith("--")) {
-            throw new Error(
-              `Expecteed ${argName} to be passed a value, received ${nextArg}`
-            );
+          if (name && value) {
+            parsedArgs[name] = value;
+          } else if (name) {
+            parsedArgs[name] = true;
           }
-
-          parsedArgs[argName] = nextArg;
-          i++;
-        } else if (Object.keys(this.boolFlags).includes(argName)) {
-          parsedArgs[argName] = true;
-        } else {
-          remainingArgs.push(arg);
         }
       } else {
         remainingArgs.push(arg);
@@ -87,7 +76,7 @@ export default class Command {
       name += ` <${posArg}>`;
     }
 
-    if (this.boolFlags.length || this.valFlags.length) {
+    if (this.flags.length) {
       name += " [flags]";
     }
 

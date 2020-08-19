@@ -6,7 +6,7 @@ spec.describe("Command", (c) => {
     let recursiveVal: boolean = false;
 
     const command = new Command("test", "test")
-      .boolFlag("recursive", "desc")
+      .flag("recursive", "desc")
       .do((args: any) => {
         recursiveVal = args.recursive;
       });
@@ -16,46 +16,18 @@ spec.describe("Command", (c) => {
     assert(recursiveVal);
   });
 
-  c.test("parses value flag arguments", async () => {
+  c.test("parses value arguments", async () => {
     let nameVal: boolean = false;
 
     const command = new Command("test", "test")
-      .valFlag("name", "sets the name")
+      .flag("name", "sets the name")
       .do((args: any) => {
         nameVal = args.name;
       });
 
-    await command.run(["--name", "Fox Mulder"]);
+    await command.run(["--name=Fox Mulder"]);
 
     assert.equal(nameVal, "Fox Mulder");
-  });
-
-  c.test("throws if value flag is not parsed argument", async () => {
-    let nameVal: boolean = false;
-
-    const command = new Command("test", "test")
-      .valFlag("name", "sets the name")
-      .do((args: any) => {
-        nameVal = args.name;
-      });
-
-    await assert.throws(async () => {
-      await command.run(["--name"]);
-    });
-  });
-
-  c.test("throws if value flag is passed another flag", async () => {
-    let nameVal: boolean = false;
-
-    const command = new Command("test", "test")
-      .valFlag("name", "sets the name")
-      .do((args: any) => {
-        nameVal = args.name;
-      });
-
-    await assert.throws(async () => {
-      await command.run(["--name", "--wat"]);
-    });
   });
 
   c.test("accepts positional arguments", async () => {
@@ -63,7 +35,7 @@ spec.describe("Command", (c) => {
     let testNumberVal: string = "";
 
     const command = new Command("test", "test")
-      .posArgs("testName", "testNumber")
+      .args("testName", "testNumber")
       .do((args: any) => {
         testNameVal = args.testName;
         testNumberVal = args.testNumber;
@@ -78,19 +50,14 @@ spec.describe("Command", (c) => {
     let receivedArgs: any = {};
 
     const command = new Command("test", "desc")
-      .boolFlag("recursive", "desc")
-      .valFlag("directory", "desc")
-      .posArgs("testName", "testNumber")
+      .flag("recursive", "desc")
+      .flag("directory", "desc")
+      .args("testName", "testNumber")
       .do((args: any) => {
         receivedArgs = args;
       });
 
-    await command.run([
-      "--directory",
-      "test",
-      "--recursive",
-      "test/fooTest.ts",
-    ]);
+    await command.run(["--directory=test", "--recursive", "test/fooTest.ts"]);
 
     assert.equal("test", receivedArgs.directory);
     assert(receivedArgs.recursive);

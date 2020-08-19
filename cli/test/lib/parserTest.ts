@@ -50,7 +50,7 @@ Spec.describe("cursed", (c) => {
     async () => {
       cursed
         .addCommand("hello", "says hello")
-        .posArgs("user name")
+        .args("user name")
         .do((args: any) => {});
       await cursed.run(["node", "script", "commands"]);
 
@@ -63,7 +63,7 @@ Spec.describe("cursed", (c) => {
 
     cursed
       .addCommand("hello", "says hello")
-      .posArgs("user name")
+      .args("user name")
       .do((args: any) => {
         receivedArgs = args;
       });
