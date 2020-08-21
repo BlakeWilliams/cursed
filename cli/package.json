@@ -1,6 +1,6 @@
 {
   "name": "@cursed/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A extendable task runner",
   "main": "dist/index.js",
   "scripts": {
@@ -15,10 +15,10 @@
     "@cursed/spec": "0.1.2",
     "@types/chalk": "^2.2.0",
     "@types/node": "^14.0.27",
-    "prettier": "^2.0.5",
-    "typescript": "^3.9.7"
+    "prettier": "^2.0.5"
   },
   "dependencies": {
+    "typescript": "^3.9.7",
     "ts-node": "^8.10.2",
     "chalk": "^4.1.0"
   }
