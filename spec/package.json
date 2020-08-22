@@ -3,6 +3,10 @@
   "version": "0.1.4",
   "description": "Simple test runner",
   "main": "dist/index.js",
+  "exports": {
+    ".": "dist/index.js",
+    "createCursedCommands": "dist/lib/cursedCommands"
+  },
   "license": "MIT",
   "scripts": {
     "build": "tsc",
