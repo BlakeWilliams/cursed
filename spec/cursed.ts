@@ -1,7 +1,6 @@
 import spec from "@cursed/spec";
-import createCursedCommands from "./lib/cursedCommands";
+import createCursedCommands from "@cursed/spec/dist/lib/cursedCommands";
 
-// @ts-ignore
 const commands = createCursedCommands(spec);
 
-export default commands;
+export default commands

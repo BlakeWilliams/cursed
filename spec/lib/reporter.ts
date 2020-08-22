@@ -13,6 +13,7 @@ export interface Reportable {
 
 export default class Reporter implements Reportable {
   failures: Test[] = [];
+  successes: Test[] = [];
 
   testRunStart(runner: Runner) {
     process.stdout.write(
@@ -26,14 +27,19 @@ export default class Reporter implements Reportable {
       this.failures.push(test);
     } else {
       process.stdout.write(chalk`{green .}`);
+      this.successes.push(test)
     }
   }
 
   testRunEnd(runner: Runner) {
-    const passingCount = runner.tests.length - this.failures.length;
+    const passingCount = this.successes.length
+    const skippedCount = runner.tests.length - (this.failures.length + this.successes.length)
 
     process.stdout.write("\n\n");
     process.stdout.write(chalk`  {green ${passingCount} passing tests}\n`);
+    if (skippedCount != 0) {
+      process.stdout.write(chalk`  {yellow ${skippedCount} skipped tests}\n`);
+    }
     process.stdout.write(
       chalk`  {red ${this.failures.length} failing tests}\n`
     );

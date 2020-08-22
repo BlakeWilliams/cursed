@@ -20,7 +20,15 @@ export default class Runner {
   }
 
   get tests() {
-    return Object.values(this.allTests);
+    const tests = Object.values(this.allTests);
+
+    if (this.grepPattern) {
+      const pattern = new RegExp(this.grepPattern)
+
+      return tests.filter(test => test.nameWithContext.match(pattern))
+    } else {
+      return tests
+    }
   }
 
   describe(name: string, fn: (context: Context) => void) {
@@ -50,21 +58,13 @@ export default class Runner {
   }
 
   async run() {
-    let grepPattern: RegExp | undefined
-
-    if (this.grepPattern) {
-      grepPattern = new RegExp(this.grepPattern)
-    }
-
     try {
       this.startKeepAlive();
       this.reporter?.testRunStart(this);
 
       for (let test of this.tests) {
-        if (!grepPattern || test.nameWithContext.match(grepPattern)) {
-          await test.runWithTimeout(this.testTimeout);
-          this.reporter?.testRunResult(test);
-        }
+        await test.runWithTimeout(this.testTimeout);
+        this.reporter?.testRunResult(test);
       }
 
       await this.reporter?.testRunEnd(this);
