@@ -82,24 +82,24 @@ spec.describe("Runner", (c) => {
   });
 
   c.test("grepPattern fiters out tests that don't match", async () => {
-    let runTests: string[] = []
+    let runTests: string[] = [];
     runner.describe("test", (c) => {
       c.test("runs", async () => {
-        runTests.push("runs")
+        runTests.push("runs");
       });
 
       c.test("also runs", async () => {
-        runTests.push("also runs")
+        runTests.push("also runs");
       });
 
       c.test("does not run", async () => {
-        runTests.push("does not run")
+        runTests.push("does not run");
       });
     });
 
-    runner.grepPattern = "(also )?runs"
+    runner.grepPattern = "(also )?runs";
     await runner.run();
 
     assert.equal(["runs", "also runs"], runTests);
-  })
+  });
 });

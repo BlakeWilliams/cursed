@@ -27,13 +27,14 @@ export default class Reporter implements Reportable {
       this.failures.push(test);
     } else {
       process.stdout.write(chalk`{green .}`);
-      this.successes.push(test)
+      this.successes.push(test);
     }
   }
 
   testRunEnd(runner: Runner) {
-    const passingCount = this.successes.length
-    const skippedCount = runner.tests.length - (this.failures.length + this.successes.length)
+    const passingCount = this.successes.length;
+    const skippedCount =
+      runner.tests.length - (this.failures.length + this.successes.length);
 
     process.stdout.write("\n\n");
     process.stdout.write(chalk`  {green ${passingCount} passing tests}\n`);

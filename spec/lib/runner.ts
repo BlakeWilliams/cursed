@@ -11,7 +11,7 @@ interface RunnerTests {
 export default class Runner {
   private allTests: RunnerTests = {};
   reporter?: Reportable;
-  grepPattern?: string
+  grepPattern?: string;
   testTimeout: number = 5000;
   working: boolean = false;
 
@@ -23,11 +23,11 @@ export default class Runner {
     const tests = Object.values(this.allTests);
 
     if (this.grepPattern) {
-      const pattern = new RegExp(this.grepPattern)
+      const pattern = new RegExp(this.grepPattern);
 
-      return tests.filter(test => test.nameWithContext.match(pattern))
+      return tests.filter((test) => test.nameWithContext.match(pattern));
     } else {
-      return tests
+      return tests;
     }
   }
 
@@ -50,7 +50,7 @@ export default class Runner {
     return test;
   }
 
-  async importTests(root: string, pathGlob: string = "/**/*Test.@(ts|js)") {
+  async importTests(root: string, pathGlob: string = "/**/*Spec.@(ts|js)") {
     const testFilePaths = glob.sync(root + pathGlob);
     const imports = testFilePaths.map((path) => import(path));
 

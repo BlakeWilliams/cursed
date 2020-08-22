@@ -3,4 +3,4 @@ import { createCursedCommands } from "@cursed/spec";
 
 const commands = createCursedCommands(spec);
 
-export default commands
+export default commands;

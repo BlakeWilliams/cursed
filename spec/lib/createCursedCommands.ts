@@ -7,9 +7,9 @@ export default (spec: Runner) => {
     cursed
       .addCommand("test", "runs tests")
       .flag("grep", "only run tests matching passed in regular expression")
-      .args("test").
-      do(async (args: any) => {
-        spec.grepPattern = args.grep
+      .args("test")
+      .do(async (args: any) => {
+        spec.grepPattern = args.grep;
 
         if (args.length) {
           for (const arg of args) {
@@ -21,7 +21,7 @@ export default (spec: Runner) => {
           await spec.run();
         } else {
           await spec
-            .importTests(process.cwd() + "/test")
+            .importTests(process.cwd() + "/spec")
             .then(() => spec.run());
         }
       })
