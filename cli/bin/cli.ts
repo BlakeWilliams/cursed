@@ -6,7 +6,10 @@ import "ts-node/register";
 
 import(process.cwd() + "/cursed.ts")
   .then(async (commands) => {
-    commands.default(cursed);
+    for (const func of Object.values(commands)) {
+      await (func as any)(cursed);
+    }
+
     try {
       await cursed.run(process.argv);
     } catch (e) {
