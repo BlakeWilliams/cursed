@@ -1,5 +1,5 @@
 import spec from "@cursed/spec";
-import createCursedCommands from "@cursed/spec/dist/lib/cursedCommands";
+import createCursedCommands from "@cursed/createCursedCommands";
 
 const commands = createCursedCommands(spec);
 
