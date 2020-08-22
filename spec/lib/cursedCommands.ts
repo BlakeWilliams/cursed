@@ -5,7 +5,10 @@ import Runner from "./runner";
 export default (spec: Runner) => {
   return function (cursed: Cursed) {
     cursed
-      .addCommand("test <filter>", async (args: string[]) => {
+      .addCommand("test", "runs tests")
+      .flag("grep", "only run tests matching passed in regular expression")
+      .args("test").
+      do(async (args: any) => {
         if (args.length) {
           for (const arg of args) {
             const file =

@@ -11,6 +11,7 @@ interface RunnerTests {
 export default class Runner {
   private allTests: RunnerTests = {};
   reporter?: Reportable;
+  grepPattern?: string
   testTimeout: number = 5000;
   working: boolean = false;
 
@@ -49,13 +50,21 @@ export default class Runner {
   }
 
   async run() {
+    let grepPattern: RegExp | undefined
+
+    if (this.grepPattern) {
+      grepPattern = new RegExp(this.grepPattern)
+    }
+
     try {
       this.startKeepAlive();
       this.reporter?.testRunStart(this);
 
       for (let test of this.tests) {
-        await test.runWithTimeout(this.testTimeout);
-        this.reporter?.testRunResult(test);
+        if (!grepPattern || test.nameWithContext.match(grepPattern)) {
+          await test.runWithTimeout(this.testTimeout);
+          this.reporter?.testRunResult(test);
+        }
       }
 
       await this.reporter?.testRunEnd(this);

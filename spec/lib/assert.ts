@@ -41,7 +41,7 @@ assert.equal = function (received: any, expected: any) {
   } else {
     if (received != expected) {
       throw new TestError(
-        chalk`{gray Expected:} {green '${expected}'}\n{gray To equal:} {red ${received}}`,
+        chalk`{gray Expected:} {green '${expected}'}\n{gray To equal:} {red '${received}'}`,
         assert.match
       );
     }

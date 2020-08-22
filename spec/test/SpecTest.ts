@@ -1,9 +1,9 @@
 import Runner from "../lib/runner";
-import Spec, { assert } from "@cursed/spec";
+import spec, { assert } from "@cursed/spec";
 
 let runner: Runner;
 
-Spec.describe("Runner", (c) => {
+spec.describe("Runner", (c) => {
   c.beforeEach(() => {
     runner = new Runner();
     runner.reporter = undefined;
@@ -80,4 +80,26 @@ Spec.describe("Runner", (c) => {
 
     assert.equal(received, expected);
   });
+
+  c.test("grepPattern fiters out tests that don't match", async () => {
+    let runTests: string[] = []
+    runner.describe("test", (c) => {
+      c.test("runs", async () => {
+        runTests.push("runs")
+      });
+
+      c.test("also runs", async () => {
+        runTests.push("also runs")
+      });
+
+      c.test("does not run", async () => {
+        runTests.push("does not run")
+      });
+    });
+
+    runner.grepPattern = "(also )?runs"
+    await runner.run();
+
+    assert.equal(["runs", "also runs"], runTests);
+  })
 });
