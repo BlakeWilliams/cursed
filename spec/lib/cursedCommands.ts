@@ -9,6 +9,8 @@ export default (spec: Runner) => {
       .flag("grep", "only run tests matching passed in regular expression")
       .args("test").
       do(async (args: any) => {
+        spec.grepPattern = args.grep
+
         if (args.length) {
           for (const arg of args) {
             const file =
