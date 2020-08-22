@@ -1,6 +1,6 @@
 {
   "name": "@cursed/spec",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Simple test runner",
   "main": "dist/index.js",
   "exports": {
