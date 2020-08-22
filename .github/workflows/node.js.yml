@@ -24,11 +24,15 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm install --global @cursed/cli
-    - working-directory: spec
-    - run: cursed test
-    - working-directory: cli
-    - run: cursed test
-    - working-directory: metal
-    - run: cursed test
-    
+
+    - name: Test @cursed/spec
+      working-directory: ./spec
+      run: npm install && npx cursed test
+
+    - name: Test @cursed/cli
+      working-directory: ./cli
+      run: npm install && npx cursed test
+
+    - name: Test @cursed/metal
+      working-directory: ./metal
+      run: npm install && npx cursed test
