@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "ts-node test/testHelper.ts",
-    "publish": "tsc && npm publish"
+    "push": "tsc && npm publish"
   },
   "author": "",
   "dependencies": {
