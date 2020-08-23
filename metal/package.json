@@ -1,5 +1,5 @@
 {
-  "name": "metal",
+  "name": "@cursed/metal",
   "version": "0.1.0",
   "description": "Middleware",
   "main": "dist/index.js",
